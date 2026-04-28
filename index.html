@@ -3,272 +3,209 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Portföy Pro</title>
-  <link rel="preconnect" href="https://api.fontshare.com">
-  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=cabinet-grotesk@500,700&display=swap" rel="stylesheet">
+  <title>Portföy Pro Live</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&f[]=cabinet-grotesk@700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #0f1115; --panel: #1a1d23; --primary: #00d2ff; --text: #f0f2f5; --muted: #94a3b8; --border: #2d3139; --success: #10b981; --error: #ef4444;
-    }
-    body { margin: 0; font-family: 'Satoshi', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
-    
-    /* Kilit Ekranı */
-    #lock-screen {
-      position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 10000;
-    }
-    .lock-card { background: var(--panel); padding: 3rem; border-radius: 2rem; border: 1px solid var(--border); text-align: center; width: 340px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-    
-    /* Ana Konteynır */
-    #app-content { display: none; padding: 2rem; max-width: 1200px; margin: 0 auto; }
-    
-    /* Üst Özet Kartları */
-    .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-    .stat-card { background: var(--panel); padding: 1.5rem; border-radius: 1.5rem; border: 1px solid var(--border); }
-    .stat-val { font-size: 2rem; font-weight: 700; font-family: 'Cabinet Grotesk'; color: var(--primary); margin: 5px 0; }
-
-    /* Layout */
-    .main-layout { display: grid; grid-template-columns: 350px 1fr; gap: 2rem; }
-    .panel { background: var(--panel); border-radius: 1.5rem; padding: 1.5rem; border: 1px solid var(--border); }
-
-    /* Form ve Tablo */
-    input, select { background: #0f1115; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 10px; width: 100%; margin-top: 8px; box-sizing: border-box; }
-    .btn { cursor: pointer; border: none; font-weight: 600; transition: 0.3s; padding: 12px; border-radius: 12px; }
-    .btn-main { background: var(--primary); color: #000; width: 100%; margin-top: 1.5rem; }
-    .btn-main:hover { opacity: 0.8; transform: translateY(-2px); }
-    
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
-    th { text-align: left; color: var(--muted); padding-bottom: 15px; border-bottom: 1px solid var(--border); }
-    td { padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-    .chart-container { height: 250px; display: flex; justify-content: center; margin-top: 1rem; }
-    .del-btn { color: var(--error); background: none; border: none; font-size: 1.2rem; cursor: pointer; }
-
-    @media (max-width: 1000px) { .main-layout { grid-template-columns: 1fr; } }
+    :root { --bg: #0b0e11; --panel: #151a21; --primary: #00d2ff; --text: #f0f2f5; --muted: #94a3b8; --border: #2d333d; --success: #00c805; --error: #ff3b30; }
+    body { margin: 0; font-family: 'Satoshi', sans-serif; background: var(--bg); color: var(--text); }
+    #lock-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 10000; }
+    .lock-card { background: var(--panel); padding: 3rem; border-radius: 2rem; border: 1px solid var(--border); text-align: center; width: 320px; }
+    #app-content { display: none; padding: 1.5rem; max-width: 1200px; margin: 0 auto; }
+    .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--panel); padding: 1.2rem; border-radius: 1.2rem; border: 1px solid var(--border); }
+    .stat-val { font-size: 1.8rem; font-weight: 700; font-family: 'Cabinet Grotesk'; color: var(--primary); }
+    .main-layout { display: grid; grid-template-columns: 320px 1fr; gap: 1.5rem; }
+    .panel { background: var(--panel); border-radius: 1.2rem; padding: 1.2rem; border: 1px solid var(--border); }
+    input, select { background: #0b0e11; border: 1px solid var(--border); color: white; padding: 10px; border-radius: 8px; width: 100%; margin-top: 5px; box-sizing: border-box; }
+    .btn { cursor: pointer; border: none; font-weight: 600; padding: 12px; border-radius: 10px; transition: 0.2s; width: 100%; }
+    .btn-main { background: var(--primary); color: #000; margin-top: 1rem; }
+    .btn-update { background: var(--success); color: #000; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th { text-align: left; color: var(--muted); padding: 10px 5px; border-bottom: 1px solid var(--border); }
+    td { padding: 12px 5px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .up { color: var(--success); } .down { color: var(--error); }
+    .badge { padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 0.75rem; }
+    @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
 <div id="lock-screen">
     <div class="lock-card">
-        <h1 style="font-family:'Cabinet Grotesk'; margin:0">Giriş Yap</h1>
-        <p style="color:var(--muted)">Portföyünü görüntülemek için şifreni gir.</p>
-        <input type="password" id="passInput" placeholder="••••" autofocus>
+        <h1 style="font-family:'Cabinet Grotesk'; margin:0">Giriş</h1>
+        <input type="password" id="passInput" placeholder="Şifre" autofocus>
         <button class="btn btn-main" onclick="checkPass()">Paneli Aç</button>
     </div>
 </div>
 
 <div id="app-content">
-    <header style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2.5rem;">
-        <div>
-            <h1 style="font-family:'Cabinet Grotesk'; margin:0; font-size:2.5rem;">Portföy <span style="color:var(--primary)">Pro</span></h1>
-            <p style="color:var(--muted); margin:0;">Varlıklarını ve nakdini buradan yönet.</p>
+    <header style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.5rem;">
+        <h1 style="font-family:'Cabinet Grotesk'; margin:0; font-size:2rem;">Portföy <span style="color:var(--primary)">Live</span></h1>
+        <div style="text-align:right;">
+            <input type="password" id="apiKeyInput" placeholder="Finnhub API Key" style="width:150px; font-size:0.7rem; margin:0">
+            <button class="btn btn-update" onclick="fetchLivePrices()" style="width:150px; font-size:0.7rem; padding:5px;">Fiyatları Güncelle ↻</button>
         </div>
-        <button onclick="logout()" style="background:rgba(239, 68, 68, 0.1); color:var(--error); border:none; padding:10px 20px; border-radius:10px; cursor:pointer;">Çıkış Yap</button>
     </header>
 
     <div class="summary-grid">
         <div class="stat-card">
-            <div class="muted">Portföy Değeri</div>
-            <div class="stat-val" id="totalValue">$0</div>
+            <div style="color:var(--muted); font-size:0.8rem">Toplam Maliyet</div>
+            <div class="stat-val" id="totalCost">$0</div>
         </div>
         <div class="stat-card">
-            <div class="muted">Kullanılabilir Nakit</div>
-            <div class="stat-val" id="cashDisplay" style="color:var(--success)">$0</div>
+            <div style="color:var(--muted); font-size:0.8rem">Güncel Değer</div>
+            <div class="stat-val" id="liveValue">$0</div>
         </div>
         <div class="stat-card">
-            <div class="muted">Toplam Varlık</div>
-            <div class="stat-val" id="netWorth" style="color:#fff">$0</div>
+            <div style="color:var(--muted); font-size:0.8rem">Kâr / Zarar</div>
+            <div class="stat-val" id="totalPnl">$0</div>
+        </div>
+        <div class="stat-card">
+            <div style="color:var(--muted); font-size:0.8rem">Nakit</div>
+            <div class="stat-val" id="cashDisplay" style="color:#fff">$0</div>
         </div>
     </div>
 
     <div class="main-layout">
-        <aside>
-            <div class="panel">
-                <h3>İşlem Ekle</h3>
-                <form id="tradeForm">
-                    <label>Varlık (Örn: BTC, THYAO)</label>
-                    <input type="text" id="symbol" placeholder="Sembol" required>
-                    <label>İşlem Tipi</label>
-                    <select id="type">
-                        <option value="BUY">Alış</option>
-                        <option value="SELL">Satış</option>
-                    </select>
-                    <label>Miktar</label>
-                    <input type="number" id="qty" step="any" required>
-                    <label>Birim Fiyat ($)</label>
-                    <input type="number" id="price" step="any" required>
-                    <button type="submit" class="btn btn-main">Portföye Ekle</button>
-                </form>
-                <div style="margin-top:2rem;">
-                    <label>Nakit Bakiyeni Güncelle ($)</label>
-                    <div style="display:flex; gap:10px;">
-                        <input type="number" id="cashInput" placeholder="Nakit">
-                        <button class="btn" onclick="updateCash()" style="background:var(--border); color:white; margin-top:8px;">Ayarla</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="panel" style="margin-top:1.5rem;">
-                <h3>Dağılım</h3>
-                <div class="chart-container">
-                    <canvas id="distChart"></canvas>
-                </div>
+        <aside class="panel">
+            <h3>İşlem Ekle</h3>
+            <form id="tradeForm">
+                <input type="text" id="symbol" placeholder="Sembol (AAPL, BTC-USD)" required>
+                <select id="type"><option value="BUY">Alış</option><option value="SELL">Satış</option></select>
+                <input type="number" id="qty" step="any" placeholder="Miktar" required>
+                <input type="number" id="price" step="any" placeholder="Fiyat" required>
+                <button type="submit" class="btn btn-main">Ekle</button>
+            </form>
+            <div style="margin-top:1.5rem;">
+                <input type="number" id="cashUpdate" placeholder="Nakit Ayarla">
+                <button class="btn" onclick="updateCash()" style="background:var(--border); color:white; margin-top:5px;">Bakiyeyi Set Et</button>
             </div>
         </aside>
 
         <main class="panel">
-            <h3>Varlıklarım</h3>
+            <h3>Varlıklarım (Canlı)</h3>
             <table>
                 <thead>
                     <tr>
                         <th>Varlık</th>
-                        <th>Miktar</th>
-                        <th>Ort. Maliyet</th>
-                        <th>Toplam</th>
-                        <th>İşlem</th>
+                        <th>Adet</th>
+                        <th>Maliyet</th>
+                        <th>Güncel</th>
+                        <th>Değer</th>
+                        <th>K/Z %</th>
                     </tr>
                 </thead>
-                <tbody id="assetsTable"></tbody>
+                <tbody id="assetTable"></tbody>
             </table>
-            
-            <h3 style="margin-top:3rem;">İşlem Geçmişi</h3>
-            <div style="max-height: 300px; overflow-y: auto;">
-                <table>
-                    <tbody id="historyTable"></tbody>
-                </table>
-            </div>
         </main>
     </div>
 </div>
 
 <script>
     const SECRET_PASS = "1234";
-    let data = JSON.parse(localStorage.getItem('pro_portfolio')) || { trades: [], cash: 0 };
-    let myChart = null;
+    let store = JSON.parse(localStorage.getItem('live_portfolio')) || { trades: [], cash: 0, apiKey: '' };
+    let livePrices = {};
 
     function checkPass() {
         if(document.getElementById('passInput').value === SECRET_PASS) {
             document.getElementById('lock-screen').style.display = 'none';
             document.getElementById('app-content').style.display = 'block';
-            init();
-        } else { alert("Hatalı Şifre!"); }
+            document.getElementById('apiKeyInput').value = store.apiKey || '';
+            render();
+        } else { alert("Yanlış!"); }
     }
 
-    function init() {
-        calculateStats();
-        renderCharts();
+    async function fetchLivePrices() {
+        const key = document.getElementById('apiKeyInput').value;
+        if(!key) return alert("Önce Finnhub API Key gir!");
+        store.apiKey = key;
+        
+        const symbols = [...new Set(store.trades.map(t => t.symbol))];
+        for(let s of symbols) {
+            try {
+                // Finnhub formatı hisseler için direkt, crypto için BINANCE:BTCUSDT gibi olabilir ama genelde 'BTC-USD' de çözer
+                const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${s.toUpperCase()}&token=${key}`);
+                const data = await res.json();
+                if(data.c) livePrices[s] = data.c;
+            } catch(e) { console.error(s + " çekilemedi"); }
+        }
+        render();
     }
 
-    function calculateStats() {
+    function render() {
         const assets = {};
-        let totalPortfolioValue = 0;
-
-        data.trades.forEach((t, index) => {
+        store.trades.forEach(t => {
             if(!assets[t.symbol]) assets[t.symbol] = { qty: 0, totalCost: 0 };
             if(t.type === 'BUY') {
                 assets[t.symbol].qty += t.qty;
                 assets[t.symbol].totalCost += (t.qty * t.price);
             } else {
+                // Satışta ortalama maliyet değişmez, sadece miktar ve ona oranla totalCost düşer
+                const avgBefore = assets[t.symbol].totalCost / assets[t.symbol].qty;
                 assets[t.symbol].qty -= t.qty;
+                assets[t.symbol].totalCost = assets[t.symbol].qty * avgBefore;
             }
         });
 
-        const tableBody = document.getElementById('assetsTable');
-        const historyBody = document.getElementById('historyTable');
-        tableBody.innerHTML = '';
-        historyBody.innerHTML = '';
+        const tbody = document.getElementById('assetTable');
+        tbody.innerHTML = '';
+        let totalCostAll = 0; let totalLiveValueAll = 0;
 
-        Object.keys(assets).forEach(sym => {
-            const asset = assets[sym];
-            if(asset.qty > 0) {
-                const value = asset.qty * (asset.totalCost / (asset.qty || 1)); // Basit maliyet hesabı
-                totalPortfolioValue += value;
-                tableBody.innerHTML += `<tr>
-                    <td><strong>${sym}</strong></td>
-                    <td>${asset.qty.toLocaleString()}</td>
-                    <td>$${(asset.totalCost / asset.qty).toFixed(2)}</td>
-                    <td>$${asset.totalCost.toLocaleString()}</td>
-                    <td>-</td>
-                </tr>`;
-            }
-        });
+        Object.keys(assets).forEach(s => {
+            const a = assets[s];
+            if(a.qty <= 0) return;
+            
+            const avgPrice = a.totalCost / a.qty;
+            const currentPrice = livePrices[s] || avgPrice;
+            const liveValue = a.qty * currentPrice;
+            const pnlPercent = ((currentPrice - avgPrice) / avgPrice) * 100;
+            
+            totalCostAll += a.totalCost;
+            totalLiveValueAll += liveValue;
 
-        data.trades.slice().reverse().forEach((t, i) => {
-            const idx = data.trades.length - 1 - i;
-            historyBody.innerHTML += `<tr>
-                <td style="color:var(--muted)">${t.symbol}</td>
-                <td style="color:${t.type==='BUY'?'var(--success)':'var(--error)'}">${t.type}</td>
-                <td>${t.qty} @ $${t.price}</td>
-                <td><button onclick="deleteTrade(${idx})" class="del-btn">×</button></td>
+            tbody.innerHTML += `<tr>
+                <td><strong>${s}</strong></td>
+                <td>${a.qty.toFixed(4)}</td>
+                <td>$${avgPrice.toFixed(2)}</td>
+                <td>$${currentPrice.toFixed(2)}</td>
+                <td>$${liveValue.toFixed(2)}</td>
+                <td class="${pnlPercent >= 0 ? 'up' : 'down'} font-weight:700">
+                    ${pnlPercent >= 0 ? '▲' : '▼'} ${Math.abs(pnlPercent).toFixed(2)}%
+                </td>
             </tr>`;
         });
 
-        document.getElementById('totalValue').innerText = '$' + totalPortfolioValue.toLocaleString();
-        document.getElementById('cashDisplay').innerText = '$' + data.cash.toLocaleString();
-        document.getElementById('netWorth').innerText = '$' + (totalPortfolioValue + data.cash).toLocaleString();
+        document.getElementById('totalCost').innerText = '$' + totalCostAll.toLocaleString();
+        document.getElementById('liveValue').innerText = '$' + totalLiveValueAll.toLocaleString();
+        const diff = totalLiveValueAll - totalCostAll;
+        document.getElementById('totalPnl').innerText = '$' + diff.toLocaleString();
+        document.getElementById('totalPnl').className = 'stat-val ' + (diff >= 0 ? 'up' : 'down');
+        document.getElementById('cashDisplay').innerText = '$' + store.cash.toLocaleString();
         
-        localStorage.setItem('pro_portfolio', JSON.stringify(data));
-        renderCharts();
-    }
-
-    function renderCharts() {
-        const assets = {};
-        data.trades.forEach(t => {
-            if(!assets[t.symbol]) assets[t.symbol] = 0;
-            assets[t.symbol] += t.type === 'BUY' ? (t.qty * t.price) : 0;
-        });
-
-        const ctx = document.getElementById('distChart').getContext('2d');
-        if(myChart) myChart.destroy();
-        myChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: Object.keys(assets),
-                datasets: [{
-                    data: Object.values(assets),
-                    backgroundColor: ['#00d2ff', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
-                    borderWidth: 0
-                }]
-            },
-            options: { cutout: '70%', plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } } } }
-        });
+        localStorage.setItem('live_portfolio', JSON.stringify(store));
     }
 
     document.getElementById('tradeForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const t = {
-            symbol: document.getElementById('symbol').value.toUpperCase(),
+            symbol: document.getElementById('symbol').value.toUpperCase().trim(),
             type: document.getElementById('type').value,
             qty: parseFloat(document.getElementById('qty').value),
             price: parseFloat(document.getElementById('price').value)
         };
-        const total = t.qty * t.price;
-        data.cash += (t.type === 'BUY' ? -total : total);
-        data.trades.push(t);
-        calculateStats();
+        store.cash += (t.type === 'BUY' ? -(t.qty * t.price) : (t.qty * t.price));
+        store.trades.push(t);
+        render();
         e.target.reset();
     });
 
     function updateCash() {
-        data.cash = parseFloat(document.getElementById('cashInput').value) || 0;
-        calculateStats();
-    }
-
-    function deleteTrade(index) {
-        if(confirm('Bu işlemi silmek istediğine emin misin?')) {
-            const t = data.trades[index];
-            const total = t.qty * t.price;
-            data.cash += (t.type === 'BUY' ? total : -total);
-            data.trades.splice(index, 1);
-            calculateStats();
-        }
+        store.cash = parseFloat(document.getElementById('cashUpdate').value) || 0;
+        render();
     }
 
     function logout() { location.reload(); }
-    document.getElementById('passInput').addEventListener('keypress', (e) => { if(e.key==='Enter') checkPass(); });
 </script>
-
 </body>
 </html>
-   
